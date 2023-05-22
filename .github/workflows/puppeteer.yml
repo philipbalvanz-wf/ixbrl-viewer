@@ -1,6 +1,8 @@
 name: Run Puppeteer Tests
 
 on:
+  push:
+    branches: [ "*" ]
   pull_request:
     branches:
       - master
@@ -15,8 +17,8 @@ jobs:
           - ubuntu-22.04
           - windows-2022
         node-version:
-          - '16'
-          - '18'
+          #          - '16'
+          #          - '18'
           - '19'
         python-version:
           - '3.11'
@@ -53,3 +55,8 @@ jobs:
         with:
           name: ${{ github.run_id }}.${{ github.run_attempt }}_${{ matrix.os }}_${{ matrix.node-version }}_${{ matrix.python-version }}_artifacts
           path: tests/puppeteer/artifacts/
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: ixbrlviewer.js
+          path: iXBRLViewerPlugin/viewer/dist/ixbrlviewer.js
